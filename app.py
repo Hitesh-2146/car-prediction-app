@@ -59,7 +59,7 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     </style>
-""", unsafe_allow_html=unsafe_allow_style=True)
+""", unsafe_allow_html=True)
 
 # ==============================================================================
 # SECTION 3: HEADER SECTION
@@ -136,7 +136,6 @@ with col2:
     st.subheader("🎯 Model Inference Engine")
     
     if st.button("🚀 Predict Species", type="primary", use_container_width=True):
-        # Scale & predict
         scaled_input = scaler.transform(input_df.values)
         prediction = model.predict(scaled_input)[0]
         prediction_prob = model.predict_proba(scaled_input)[0]
@@ -145,14 +144,11 @@ with col2:
         predicted_class = target_classes[prediction]
         confidence = prediction_prob[prediction] * 100
         
-        # Display main results
         st.success(f"**Predicted Species:** {predicted_class}")
         st.metric(label="Confidence Score", value=f"{confidence:.1f}%")
         
-        # Class Probabilities Breakdown
         st.markdown("---")
         st.markdown("#### 📈 Probability Distribution Across Classes")
         for cls, prob in zip(target_classes, prediction_prob):
             st.write(f"**{cls}** ({prob*100:.1f}%)")
             st.progress(float(prob))
-            
